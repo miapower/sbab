@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Regular";   /*Can be any text*/
+  src: local("SBAB-Regular"),
+    url("./fonts/SBAB-Regular.woff") format("woff");
+}
+
+body {
+  margin: 0;
+  font-family: "Regular"; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
