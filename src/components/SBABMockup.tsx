@@ -17,13 +17,13 @@ setInterest(i);
   return (
     <>
     <div className="container mx-auto md:w-10/12 lg:w-8/12 w-auto md:my-20 my-5 p-4">
-    <div className="flex">
+    <div className="flex justify-between">
       <div className="w-1/1 sm:w-2/3 md:w-3/4 ">
         <h1 className="text-6xl">Din räntekostnad</h1>
         <p className="my-8 text-lg">Här ser du både våra aktuella räntor och din räntekostnad per månad</p>
       </div>
       <div className="sm:w-1/3 md:w-1/4 invisible md:visible">
-      <img src={Percentage} alt="Percentage" />
+      <img src={Percentage} alt="Percentage" className="ml-auto" />
       </div>
     </div>
     <div className="flex flex-col">
@@ -42,7 +42,7 @@ setInterest(i);
 
       </div>
       <div className="sm:w-1/3 md:w-1/4">
-      <img src={Compare} alt="Compare" />
+      <img src={Compare} alt="Compare" className="ml-auto" />
         
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 
 interface SBABFormProps {
     handleCalculate: ( m:number, i:number) => void;
@@ -8,6 +8,22 @@ export const SBABForm = ({handleCalculate}: SBABFormProps) => {
     const handleThisCalculate = (event: SyntheticEvent) => {
         handleCalculate(700, 8);
     }
+
+    const [data, setData] = useState([]);
+
+    const fetchData = () => {
+        return fetch("https://developer.sbab.se/sandbox/api/interest-rates/2.0/mortgage-rates")
+              .then((response) => response.json())
+              .then((data) => {
+                    setData(data);
+                    console.log(data);
+                });
+      }
+    
+      useEffect(() => {
+        fetchData();
+      },[])
+
   return (
     <>
     <form className="w-full md:w-1/2">
