@@ -1,40 +1,89 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react'
+import React, { SetStateAction, SyntheticEvent, useEffect, useState } from 'react'
 
 interface SBABFormProps {
     handleCalculate: ( m:number, i:number) => void;
 }
 
 export const SBABForm = ({handleCalculate}: SBABFormProps) => {
+
+    const [inputAmount, setInputAmount] = useState<any>('2000000');
+    const [rates, setRates] = useState([
+      {binding_period_in_months: 'X', mortgage_rate: 0},
+      ]
+      );
+    const [isLoading, setIsLoading] = useState(false);
+    const [selLoan, setSelLoan] = useState(inputAmount);
+    const [selRate, setSelRate] = useState<any>(null);
+
+
     const handleThisCalculate = (event: SyntheticEvent) => {
-        handleCalculate(700, 8);
+        const target = event.target as HTMLSelectElement | HTMLInputElement;
+        if (target.id === 'loan')
+            setSelLoan(parseFloat(target.value));
+        if (target.id === 'rate')
+            setSelRate(parseFloat(target.value));
+
+        //throw new Error("Du valde något som skulle orsaka fel så den här sidan skulle visas");
+
     }
 
-    const [data, setData] = useState([]);
+      const formatAmount = (val: string | any) => {
+         const value = parseInt(val);
+        return value.toLocaleString('sv-SE');
+        //return value;
+      }
+
+      const handleChangeLoan = (e: SyntheticEvent) => {
+        const target = e.target as HTMLInputElement;
+        if (target.value)
+          setInputAmount(formatAmount(target.value));
+        // else
+        //   setInputAmount(0);
+      }
 
     const fetchData = () => {
-        return fetch("https://developer.sbab.se/sandbox/api/interest-rates/2.0/mortgage-rates")
-              .then((response) => response.json())
-              .then((data) => {
-                    setData(data);
-                    console.log(data);
-                });
+      setIsLoading(true);
+        fetch("https://developer.sbab.se/sandbox/api/interest-rates/2.0/mortgage-rates")
+        .then((response) => {   
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error('Det fick inte att hämta räntedatat');
+        })
+        .then((responseJson) => {
+          setRates(responseJson.mortgage_rates);
+          setSelRate(responseJson.mortgage_rates[0].mortgage_rate);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          throw new Error("Något gick fel");
+        });
       }
-    
+
       useEffect(() => {
         fetchData();
-      },[])
+      },[]) 
+
+    useEffect(() => {
+        handleCalculate(selLoan, selRate);
+      },[selLoan, selRate, handleCalculate])  
+
 
   return (
     <>
     <form className="w-full md:w-1/2">
         <div className="flex flex-col space-y-2 mb-10">
         <label htmlFor='loan'>Önskat lånebelopp</label>
-        <input id="loan" type="text" placeholder="Ange ett lånebelopp" onChange={(e) => handleThisCalculate(e)} className="appearance-none border w-full py-2 px-3 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline" />
-        <label htmlFor='horizon'>Välj bindningstid</label>
+        <input id="loan" type="text" value={formatAmount(inputAmount)} onChange={(e) => handleChangeLoan(e)} /*onInput={(e) => handleInputAmount(e)}*/ placeholder="Ange ett lånebelopp" onBlur={(e) => handleThisCalculate(e)} className="appearance-none border w-full py-2 px-3 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline" />
+        <label htmlFor='rate'>Välj bindningstid</label>
         <div className="inline-block relative">
-        <select name="horizon" onChange={(e) => handleThisCalculate(e)} className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 leading-tight focus:outline-none focus:shadow-outline">
-        <option>Ett val</option>
-        <option>Två val</option>
+        <select id="rate" name="rate" onChange={(e) => handleThisCalculate(e)} className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 leading-tight focus:outline-none focus:shadow-outline">
+            <>
+            {!isLoading && rates && rates.length > 0 && rates.map((rateObj, index) => (
+            <option key={rateObj.mortgage_rate} value={rateObj.mortgage_rate}>{`${rateObj.binding_period_in_months} mån - ${rateObj.mortgage_rate} %`}</option>
+          ))}
+        
+        </>
         </select>
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
     <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
