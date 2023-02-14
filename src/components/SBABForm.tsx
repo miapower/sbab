@@ -1,4 +1,4 @@
-import React, { SetStateAction, SyntheticEvent, useEffect, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 
 interface SBABFormProps {
     handleCalculate: ( m:number, i:number) => void;
@@ -14,7 +14,6 @@ export const SBABForm = ({handleCalculate}: SBABFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [selLoan, setSelLoan] = useState(inputAmount);
     const [selRate, setSelRate] = useState<any>(null);
-
 
     const handleThisCalculate = (event: SyntheticEvent) => {
         const target = event.target as HTMLSelectElement | HTMLInputElement;
