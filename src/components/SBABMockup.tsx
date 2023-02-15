@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import ErrorBoundary from '../ErrorBoundary';
 import Compare from "./../images/svg/Compare.svg";
 import Percentage from "./../images/svg/Percentage.svg";
@@ -11,14 +11,16 @@ const [monthly, setMonthly] = useState(0);
 const [interest, setInterest] = useState(0);
 
 const handleCalculate = (m: number, i: number) => {
+if (i === 0)
+  throw new Error('Du valde det felaktiga alternativet');
 setInterest(i);
 setMonthly(i * m / 100 / 12);
 //lånebelopp * 0.0176 / 12 
-console.log("handleCalculate");
+
 }
 
   return (
-    <>
+
     <ErrorBoundary>
     <div className="container mx-auto md:w-10/12 lg:w-8/12 w-auto md:my-20 my-5 p-4">
     <div className="flex justify-between">
@@ -54,7 +56,5 @@ console.log("handleCalculate");
 
 </ErrorBoundary>
     
-    
-    </>
   )
 }
