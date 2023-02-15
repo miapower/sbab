@@ -23,7 +23,7 @@ console.log("handleCalculate");
     <div className="container mx-auto md:w-10/12 lg:w-8/12 w-auto md:my-20 my-5 p-4">
     <div className="flex justify-between">
       <div className="w-1/1 sm:w-2/3 md:w-3/4 ">
-        <h1 className="text-6xl">Din räntekostnad</h1>
+        <h1 className="text-4xl lg:text-6xl">Din räntekostnad</h1>
         <p className="my-8 text-lg">Här ser du både våra aktuella räntor och din räntekostnad per månad</p>
       </div>
       <div className="sm:w-1/3 md:w-1/4 invisible md:visible">
@@ -42,7 +42,7 @@ console.log("handleCalculate");
     
     <div className="flex mt-3 items-center">
       <div className="w-1/1 sm:w-2/3 md:w-3/4 ">
-      {monthly > 0 && (<p className="text-6xl">{Math.round(monthly).toLocaleString('sv-SE')} kr / mån</p>) }
+      {monthly > 0 && (<p className="text-4xl lg:text-6xl">{Math.round(monthly).toLocaleString('sv-SE')} kr / mån</p>) }
 
       </div>
       <div className="sm:w-1/3 md:w-1/4">
