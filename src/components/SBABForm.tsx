@@ -7,7 +7,7 @@ interface SBABFormProps {
 
 export const SBABForm = ({handleCalculate}: SBABFormProps) => {
 
-    const [inputAmount, setInputAmount] = useState<any>('2000000');
+    const [inputAmount] = useState<any>('2000000');
     const [rates, setRates] = useState([
       {binding_period_in_months: 'X', mortgage_rate: 0},
       ]
